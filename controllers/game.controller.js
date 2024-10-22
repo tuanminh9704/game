@@ -1,27 +1,17 @@
-const games = [
-    {   
-        gameId: 1,
-        title: "Age of empires",
-        genre: "Strategy",
-        price: 500,
-    }, 
-    {
-        gameId: 2,
-        title: "CSGO",
-        genre: "Strategy",
-        price: 200,
-    }
-]
+const connect = require("../configs/database");
+
 
 //[GET] /games
-module.exports.game = (req, res) => {
+module.exports.game = async (req, res) => {
     try {
-        const records = games.map(item => item);
-        // console.log(getGame);
+        const sql = "SELECT * FROM games"
+        const conn = await connect.connection();
+        const records = await conn.execute(sql);
+
         res.json({
             code: 200,
             message: "Success!",
-            data: records,
+            data: records[0],
         });
     } catch (error) {
         res.status(500).json({
@@ -34,18 +24,21 @@ module.exports.game = (req, res) => {
 }
 
 //[POST] /games
-module.exports.createGame = (req, res) => {
+module.exports.createGame = async (req, res) => {
     try {
+        const conn = await connect.connection();
+        let sql = `INSERT INTO games (game_id, title, genre, price) VALUES (?, ?, ?, ?)`;
         const newGame = req.body;
-
-        if(newGame.title.trim() === "" || newGame.genre.trim() === ""){
+        const values = Object.values(newGame);
+        // console.log(values);
+        
+        if(newGame.title.trim() === "" || newGame.genre.trim() === "" || isNaN(newGame.price) || newGame.price < 0){
             res.json({
                 code: 500,
                 message: "Title or genre is invalid"
             })
         }
-        
-        games.push(newGame);
+        await conn.query(sql, values);
 
         res.json({
             code: 200,
@@ -54,7 +47,7 @@ module.exports.createGame = (req, res) => {
         })
 
     } catch (error) {
-        res.json.status(500)({
+        res.json({
             code: 500,
             message: "Error!",
             error: error.message
@@ -65,15 +58,17 @@ module.exports.createGame = (req, res) => {
 }
 
 //[GET] /games/:id
-module.exports.findGame = (req, res) => {
+module.exports.findGame = async (req, res) => {
     try {
+        const conn = await connect.connection();
         const gameId = parseInt(req.params.id);
-        const game = games.find(item => item.gameId === gameId);
-        // console.log(game);
+        const sql = `SELECT * FROM games WHERE game_id = ?`;
+        
+        const game = await conn.query(sql, [gameId]);
         res.json({
             code: 200,
             message: "Success!",
-            data: game
+            data: game[0]
         })
     } catch (error) {
         res.status(500).json({
@@ -85,12 +80,14 @@ module.exports.findGame = (req, res) => {
 }
 
 //[PATCH] /games/:id
-module.exports.updateGame = (req, res) => {
+module.exports.updateGame = async (req, res) => {
     try {
-        const gameId = parseInt(req.params.id);
+        const conn = await connect.connection();
+        const gameId = req.params.id;
         const {title, genre, price} = req.body;
-
-        const game = games.find(item => item.gameId === gameId);
+        const keysArray = Object.keys(req.body).map(key => `${key} = ? `).join(", ")
+        const sql = `UPDATE games SET ${keysArray} WHERE game_id = ?`;
+        const valuesArray = Object.values(req.body);
 
         if(title.trim() === "" || genre.trim() == "" || isNaN(price) || price < 0){
             res.json({
@@ -99,21 +96,12 @@ module.exports.updateGame = (req, res) => {
             })
         }
         else{
-            if(title){
-                game.title = title;
-            }
-            if(genre){
-                game.genre = genre;
-            }
-            if(price){
-                game.price = price;
-            }
+            await conn.query(sql, [gameId, ...valuesArray]);
         }
 
         res.json({
             code: 200,
             message: "Success!",
-            data: game
         })
     } catch (error) {
         res.json({
@@ -126,15 +114,17 @@ module.exports.updateGame = (req, res) => {
 }
 
 //[DELETE] /games/:id
-module.exports.deleteGame = (req, res) => {
+module.exports.deleteGame = async (req, res) => {
     try {
-        const gameId = parseInt(req.params.id);
-        const gameIndex = games.findIndex(item => item.gameId === gameId);
-        games.splice(gameIndex);
+        const gameId = req.params.id;
+        const conn = await connect.connection();
+        const sql = `DELETE FROM games WHERE game_id = ?`;
+        const record = await conn.query(sql, [gameId]);
+
         res.json({
             code: 200,
             message: "Success!",
-            data: games
+            data: record
         })
     } catch (error) {
         res.json.status(500)({
