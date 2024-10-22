@@ -99,15 +99,10 @@ module.exports.updateGame = (req, res) => {
             })
         }
         else{
-            if(title){
-                game.title = title;
-            }
-            if(genre){
-                game.genre = genre;
-            }
-            if(price){
-                game.price = price;
-            }
+            game.title = title;
+            game.genre = genre;
+            game.price = price;
+
         }
 
         res.json({
