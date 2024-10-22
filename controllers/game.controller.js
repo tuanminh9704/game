@@ -38,12 +38,13 @@ module.exports.createGame = (req, res) => {
     try {
         const newGame = req.body;
 
-        if(newGame.title == "" || newGame.genre == ""){
+        if(newGame.title.trim() === "" || newGame.genre.trim() === ""){
             res.json({
                 code: 500,
-                message: "Title or genre is null"
+                message: "Title or genre is invalid"
             })
         }
+        
         games.push(newGame);
 
         res.json({
@@ -90,14 +91,23 @@ module.exports.updateGame = (req, res) => {
         const {title, genre, price} = req.body;
 
         const game = games.find(item => item.gameId === gameId);
-        if(title){
-            game.title = title;
+
+        if(title.trim() === "" || genre.trim() == "" || isNaN(price) || price < 0){
+            res.json({
+                code: 500,
+                message: "title, genre or price is invalid"
+            })
         }
-        if(genre){
-            game.genre = genre;
-        }
-        if(price){
-            game.price = price;
+        else{
+            if(title){
+                game.title = title;
+            }
+            if(genre){
+                game.genre = genre;
+            }
+            if(price){
+                game.price = price;
+            }
         }
 
         res.json({
