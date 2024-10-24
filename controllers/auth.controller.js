@@ -1,5 +1,8 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 const connect = require("../configs/database");
+const generateTokenHelpers = require("../helpers/generateToken");
 
 //[POST] /auth/login
 module.exports.login = async (req, res) => {
@@ -8,7 +11,7 @@ module.exports.login = async (req, res) => {
         const userName = req.body.username;
         const password = req.body.password;
 
-        const sqlSelectUser = `SELECT users.email, users.user_name, users.password FROM users WHERE user_name = ?`;
+        const sqlSelectUser = `SELECT users.user_id, users.email, users.user_name, users.password FROM users WHERE user_name = ?`;
 
         const existUserName = (await conn.query(sqlSelectUser, [userName]))[0][0];
 
@@ -28,11 +31,16 @@ module.exports.login = async (req, res) => {
             })
             return;
         }
+        
+        const accessToken = generateTokenHelpers.generateAccessToken(existUserName);
+        // console.log(accessToken);
 
         res.json({
             code: 200,
-            message: "Login successfully!"
+            message: "Login successfully!",
+            accessToken: accessToken
         })
+
     } catch (error) {
         res.status(500).json({
             code: 500,
