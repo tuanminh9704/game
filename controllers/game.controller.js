@@ -2,7 +2,7 @@ const connect = require("../configs/database");
 
 
 //[GET] /games
-module.exports.game = async (req, res) => {
+module.exports.getListGame = async (req, res) => {
     try {
         const sql = "SELECT * FROM games"
         const conn = await connect.connection();
@@ -58,7 +58,7 @@ module.exports.createGame = async (req, res) => {
 }
 
 //[GET] /games/:id
-module.exports.findGame = async (req, res) => {
+module.exports.findGameById = async (req, res) => {
     try {
         const conn = await connect.connection();
         const gameId = parseInt(req.params.id);
@@ -80,7 +80,7 @@ module.exports.findGame = async (req, res) => {
 }
 
 //[PATCH] /games/:id
-module.exports.updateGame = async (req, res) => {
+module.exports.updateGameById = async (req, res) => {
     try {
         const conn = await connect.connection();
         const gameId = req.params.id;
@@ -114,7 +114,7 @@ module.exports.updateGame = async (req, res) => {
 }
 
 //[DELETE] /games/:id
-module.exports.deleteGame = async (req, res) => {
+module.exports.deleteGameById = async (req, res) => {
     try {
         const gameId = req.params.id;
         const conn = await connect.connection();
