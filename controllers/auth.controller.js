@@ -13,7 +13,7 @@ module.exports.login = async (req, res) => {
 
         const sqlSelectUser = `SELECT users.user_id, users.email, users.user_name, users.password FROM users WHERE user_name = ?`;
 
-        const existUserName = (await conn.query(sqlSelectUser, [userName]))[0][0];
+        const existUserName = (await conn.query(sqlSelectUser, [userName]))?.[0]?.[0];
 
         // console.log(existUserName);
         if(!existUserName){
@@ -66,14 +66,14 @@ module.exports.register = async (req, res) => {
         const existEmailIndex = users.findIndex(user => user.email === newUser.email);
         const existUserNameIndex = users.findIndex(user => user.user_name === newUser.username);
 
-        if(existEmailIndex != -1 || newUser.email.trim() === ""){
+        if(existEmailIndex !== -1 || newUser.email.trim() === ""){
             res.status(400).json({
                 code: 400,
                 message: "Email is invalid!"
             })
             return;
         }
-        if(existUserNameIndex != -1 || newUser.username.trim() == ""){
+        if(existUserNameIndex !== -1 || newUser.username.trim() === ""){
             res.status(400).json({
                 code: 400,
                 message: "User name is invalid!",
