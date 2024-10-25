@@ -4,7 +4,7 @@ const router = express.Router();
 
 const controller = require("../controllers/game.controller");
 
-router.use(authMiddleware.verifyTokenMiddleware);
+// router.use(authMiddleware.verifyTokenMiddleware);
 
 router.get("/", controller.getListGame);
 
