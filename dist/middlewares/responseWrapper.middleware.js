@@ -1,15 +1,14 @@
-import {Express, Request, Response, NextFunction } from "express";
-
-const responseWrapper = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).success = (data: any) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const responseWrapper = (req, res, next) => {
+    res.status(200).success = (data) => {
         res.json({
             success: true,
             data: data,
             message: null
         });
     };
-
-    res.successWithPagination = (data: any, totalPages: number, totalItems: number, pageIndex: number) => {
+    res.successWithPagination = (data, totalPages, totalItems, pageIndex) => {
         res.status(200).json({
             success: true,
             totalPages: totalPages,
@@ -19,16 +18,13 @@ const responseWrapper = (req: Request, res: Response, next: NextFunction) => {
             message: null
         });
     };
-
-    res.status(400).error = (message: string) => {
+    res.status(400).error = (message) => {
         res.json({
             success: false,
             data: null,
             message: message
         });
     };
-
     next();
 };
-
-export default responseWrapper;
+exports.default = responseWrapper;

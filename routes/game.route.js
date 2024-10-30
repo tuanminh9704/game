@@ -1,19 +1,13 @@
-import {Express, Router} from "express";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
 const authMiddleware = require("../middlewares/auth.middleware");
-const router = Router();
-
+const router = (0, express_1.Router)();
 const controller = require("../controllers/game.controller");
-
 // router.use(authMiddleware.verifyTokenMiddleware);
-
 router.get("/", controller.getListGame);
-
 router.post("/", controller.createGame);
-
 router.get("/:id", controller.findGameById);
-
 router.patch("/:id", controller.updateGameById);
-
 router.delete("/:id", controller.deleteGameById);
-
-export default router;
+exports.default = router;

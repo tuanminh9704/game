@@ -22,8 +22,8 @@ export const getListGame = async (req : Request, res : Response) => {
         const games = await prisma.games.findMany();
         res.success(games);
     } catch (error) {
-        // res.error((error as string));
-        console.log(typeof error);
+        res.error((error as string));
+        // console.log(typeof error);
     }
 
 }
