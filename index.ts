@@ -1,15 +1,15 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const rateLimit = require("express-rate-limit");
+import express, {Express, Request, Response} from "express";
+import bodyParser from "body-parser";
+import rateLimit from "express-rate-limit";
 
-const responseWrapper = require("./middlewares/responseWrapper.middleware");
+import responseWrapper from "./middlewares/responseWrapper.middleware";
 
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT;
 
-const router = require("./routes/index.route");
+import router from "./routes/index.route";
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,

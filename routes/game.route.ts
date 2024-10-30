@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 const authMiddleware = require("../middlewares/auth.middleware");
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.patch("/:id", controller.updateGameById);
 
 router.delete("/:id", controller.deleteGameById);
 
-module.exports = router;
+export default router;
