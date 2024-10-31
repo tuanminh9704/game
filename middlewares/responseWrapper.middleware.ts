@@ -1,8 +1,8 @@
 import {Express, Request, Response, NextFunction } from "express";
 
 const responseWrapper = (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).success = (data: any) => {
-        res.json({
+    res.success = (data: any) => {
+        res.status(200).json({
             success: true,
             data: data,
             message: null
@@ -20,8 +20,8 @@ const responseWrapper = (req: Request, res: Response, next: NextFunction) => {
         });
     };
 
-    res.status(400).error = (message: string) => {
-        res.json({
+    res.error = (message: string) => {
+        res.status(400).json({
             success: false,
             data: null,
             message: message

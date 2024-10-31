@@ -6,7 +6,7 @@ export const verifyTokenMiddleware = (req : Request, res : Response, next : Next
     const authHeader = req.headers['authorization'];
     const token :any  = authHeader && authHeader.split(' ')[1]; 
 
-    if(token == null){
+    if(!token){
         res.error("Access token is invalid!");
     }
     // console.log(tokenHeaderKey);

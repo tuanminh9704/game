@@ -17,7 +17,7 @@ const prisma = new PrismaClient({
   queryLog(prisma);
 
 //[POST] /auth/login
-module.exports.login = async (req : Request, res : Response) => {
+export const login = async (req : Request, res : Response) => {
     try {
         const userName = req.body.username;
         const password = req.body.password;
@@ -47,7 +47,7 @@ module.exports.login = async (req : Request, res : Response) => {
     
 }
 // [POST] /auth/register
-module.exports.register = async (req : Request, res : Response) => {
+export const register = async (req : Request, res : Response) => {
     try {
         const newUser = req.body;
         const salt = bcrypt.genSaltSync(15);

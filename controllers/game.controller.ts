@@ -29,7 +29,7 @@ export const getListGame = async (req : Request, res : Response) => {
 }
 
 //[POST] /games
-module.exports.createGame = async (req : Request, res: Response) => {
+export const createGame = async (req : Request, res: Response) => {
     try {
         const newGame = req.body;
         
@@ -52,7 +52,7 @@ module.exports.createGame = async (req : Request, res: Response) => {
 }
 
 //[GET] /games/:id
-module.exports.findGameById = async (req : Request, res : Response) => {
+export const findGameById = async (req : Request, res : Response) => {
     try {
         const gameId : string = req.params.id;
         const game = await prisma.games.findMany({
@@ -67,7 +67,7 @@ module.exports.findGameById = async (req : Request, res : Response) => {
 }
 
 //[PATCH] /games/:id
-module.exports.updateGameById = async (req : Request, res : Response) => {
+export const updateGameById = async (req : Request, res : Response) => {
     try {
         const gameId = req.params.id;
         const {title, genre, price} = req.body;
@@ -92,7 +92,7 @@ module.exports.updateGameById = async (req : Request, res : Response) => {
 }
 
 //[DELETE] /games/:id
-module.exports.deleteGameById = async (req : Request, res : Response) => {
+export const deleteGameById = async (req : Request, res : Response) => {
     try {
         const gameId = req.params.id;
         const record = await prisma.games.delete({
