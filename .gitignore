@@ -1,3 +1,4 @@
 /node_modules
 .env
 /prisma-queries-log.txt
+/dist
