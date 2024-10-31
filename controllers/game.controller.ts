@@ -1,7 +1,6 @@
-const { query } = require("express");
-const connect = require("../configs/database");
-const { PrismaClient } = require("@prisma/client");
-const fs = require("fs");
+import { PrismaClient } from "@prisma/client";
+import { Request, Response } from "express";
+
 const prismaQueriesLog = require("../helpers/prismaQueriesLog");
 
 
@@ -14,21 +13,23 @@ const prisma = new PrismaClient({
   ],
 });
 
+
 prismaQueriesLog.queryLog(prisma);
 
 //[GET] /games
-module.exports.getListGame = async (req, res) => {
+export const getListGame = async (req : Request, res : Response) => {
     try {
         const games = await prisma.games.findMany();
         res.success(games);
     } catch (error) {
-        res.error(error.message);
+        res.error((error as string));
+        // console.log(typeof error);
     }
 
 }
 
 //[POST] /games
-module.exports.createGame = async (req, res) => {
+export const createGame = async (req : Request, res: Response) => {
     try {
         const newGame = req.body;
         
@@ -43,17 +44,17 @@ module.exports.createGame = async (req, res) => {
         res.success(record);
 
     } catch (error) {
-        res.error(error.message);
+        res.error((error as string));
+        console.log(typeof error);
     }
 
     
 }
 
 //[GET] /games/:id
-module.exports.findGameById = async (req, res) => {
+export const findGameById = async (req : Request, res : Response) => {
     try {
-        const gameId = req.params.id;
-
+        const gameId : string = req.params.id;
         const game = await prisma.games.findMany({
             where:{
                 game_id: gameId
@@ -61,12 +62,12 @@ module.exports.findGameById = async (req, res) => {
         })
         res.success(game);
     } catch (error) {
-        res.error(error.message);
+        res.error((error as string));
     }
 }
 
 //[PATCH] /games/:id
-module.exports.updateGameById = async (req, res) => {
+export const updateGameById = async (req : Request, res : Response) => {
     try {
         const gameId = req.params.id;
         const {title, genre, price} = req.body;
@@ -85,13 +86,13 @@ module.exports.updateGameById = async (req, res) => {
         res.success(game);
 
     } catch (error) {
-        res.error(error.message);
+        res.error((error as string));
     }
 
 }
 
 //[DELETE] /games/:id
-module.exports.deleteGameById = async (req, res) => {
+export const deleteGameById = async (req : Request, res : Response) => {
     try {
         const gameId = req.params.id;
         const record = await prisma.games.delete({
@@ -103,7 +104,7 @@ module.exports.deleteGameById = async (req, res) => {
         res.success(record);
 
     } catch (error) {
-        res.error(error.message);
+        res.error((error as string));
     }
 
 }

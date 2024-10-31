@@ -1,1 +1,0 @@
-{"query":"SELECT `game_management`.`users`.`user_id`, `game_management`.`users`.`email`, `game_management`.`users`.`user_name`, `game_management`.`users`.`password` FROM `game_management`.`users` WHERE `game_management`.`users`.`user_name` = ?","params":"[\"testuser1\"]","duration":0}

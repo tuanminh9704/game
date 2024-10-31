@@ -1,8 +1,9 @@
-const bcrypt = require("bcryptjs");
-const { PrismaClient } = require("@prisma/client");
+import bcrypt from "bcryptjs";
+import { PrismaClient } from "@prisma/client";
+import { Express, Request, Response } from "express";
 
-const generateTokenHelpers = require("../helpers/generateToken");
-const prismaQueriesLog = require("../helpers/prismaQueriesLog");
+import {generateAccessToken} from "../helpers/generateToken";
+import {queryLog} from "../helpers/prismaQueriesLog";
 
 const prisma = new PrismaClient({
     log: [
@@ -13,10 +14,10 @@ const prisma = new PrismaClient({
     ],
   });
   
-  prismaQueriesLog.queryLog(prisma);
+  queryLog(prisma);
 
 //[POST] /auth/login
-module.exports.login = async (req, res) => {
+export const login = async (req : Request, res : Response) => {
     try {
         const userName = req.body.username;
         const password = req.body.password;
@@ -37,16 +38,16 @@ module.exports.login = async (req, res) => {
             return;
         }
         
-        const accessToken = generateTokenHelpers.generateAccessToken(existUserName);
+        const accessToken = generateAccessToken(existUserName);
         res.success(accessToken);
 
     } catch (error) {
-        res.error(error.message);
+        res.error((error as string));
     }
     
 }
 // [POST] /auth/register
-module.exports.register = async (req, res) => {
+export const register = async (req : Request, res : Response) => {
     try {
         const newUser = req.body;
         const salt = bcrypt.genSaltSync(15);
@@ -98,6 +99,6 @@ module.exports.register = async (req, res) => {
         res.success(record);
         
     } catch (error) {
-        res.error(error.message);
+        res.error((error as string));
     }
 }

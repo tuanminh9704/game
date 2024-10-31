@@ -1,7 +1,7 @@
 const fs = require("fs");
 
-module.exports.queryLog = (prisma) => {
-    prisma.$on('query', (e) => {
+export const queryLog = (prisma : any) : void => {
+    prisma.$on('query', (e : {query : string, params : string, duration : string}) => {
         try {
             const log = {
                 "query": e.query,
