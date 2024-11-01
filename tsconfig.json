@@ -4,7 +4,8 @@
   },
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "es2016",                                 
+    "target": "es2016", 
+    "types": ["node", "jest"],                                
     /* Modules */
     "module": "commonjs",                              
     
@@ -15,5 +16,5 @@
     "strict": true,                                    
     "skipLibCheck": true                              
   }
-
+  
 }

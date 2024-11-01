@@ -21,7 +21,7 @@ export const login = async (req : Request, res : Response) => {
     try {
         const userName = req.body.username;
         const password = req.body.password;
-
+        debugger;
         const existUserName = await prisma.users.findMany({
             where: {
                 user_name: userName
