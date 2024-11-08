@@ -45,7 +45,7 @@ export const createGame = async (req : Request, res: Response) => {
 
     } catch (error) {
         res.error((error as string));
-        console.log(typeof error);
+        // console.log(typeof error);
     }
 
     
